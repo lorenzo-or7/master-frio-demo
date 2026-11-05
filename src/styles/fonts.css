@@ -1,0 +1,8 @@
+/* Spline Sans — fonte oficial e única do produto (OFL, ver /assets/fonts/OFL.txt). */
+@font-face {
+  font-family: 'Spline Sans';
+  src: url('/assets/fonts/SplineSans-Variable.woff2') format('woff2');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}

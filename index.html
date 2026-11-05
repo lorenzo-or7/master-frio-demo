@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="night">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Master Frio Climatização · Curitiba e região</title>
+    <meta
+      name="description"
+      content="Instalação, manutenção e soluções em ar-condicionado para residências e comércios em Curitiba e região."
+    />
+    <!-- Protótipo demonstrativo: não indexar até autorização expressa da empresa. -->
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="googlebot" content="noindex, nofollow" />
+    <meta name="theme-color" content="#07182F" />
+    <meta name="color-scheme" content="dark light" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content="Master Frio Climatização" />
+    <meta
+      property="og:description"
+      content="Instalação, manutenção e soluções em ar-condicionado para residências e comércios em Curitiba e região."
+    />
+    <meta property="og:image" content="/assets/hero/master-frio-hero-poster.webp" />
+
+    <link rel="icon" type="image/png" href="/assets/brand/master-frio-icone-aprovado.png" />
+    <link
+      rel="preload"
+      href="/assets/fonts/SplineSans-Variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="preload" href="/assets/hero/master-frio-hero-poster.webp" as="image" fetchpriority="high" />
+
+    <!-- Aplica o tema salvo antes da primeira pintura (evita flash de tema). -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('mf-theme');
+          var theme = saved === 'day' || saved === 'night' ? saved : 'night';
+          document.documentElement.setAttribute('data-theme', theme);
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', theme === 'day' ? '#F4F8FC' : '#07182F');
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'night');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
