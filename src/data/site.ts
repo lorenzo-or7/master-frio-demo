@@ -8,6 +8,9 @@
  * - CNPJ, endereço, tempo de experiência e preços NÃO são exibidos de propósito.
  */
 
+/** Respeita o caminho-base do site (inclusive no GitHub Pages). */
+const asset = (path: string): string => `${import.meta.env.BASE_URL}${path}`
+
 export const brand = {
   /** Nome exibido na interface. */
   name: 'Master Frio Climatização',
@@ -16,7 +19,7 @@ export const brand = {
   short: 'Master Frio',
   descriptor: 'Climatização',
   coverage: 'Curitiba e região',
-  icon: '/assets/brand/master-frio-icone-aprovado.png',
+  icon: asset('assets/brand/master-frio-icone-aprovado.png'),
 } as const
 
 export const contact = {
@@ -52,8 +55,8 @@ export const hero = {
     'Instalação, manutenção e soluções em ar-condicionado para residências e comércios em Curitiba e região.',
   primaryCta: 'Solicitar orçamento',
   secondaryCta: 'Conhecer serviços',
-  video: '/assets/hero/master-frio-hero-loop.mp4',
-  poster: '/assets/hero/master-frio-hero-poster.webp',
+  video: asset('assets/hero/master-frio-hero-loop.mp4'),
+  poster: asset('assets/hero/master-frio-hero-poster.webp'),
 } as const
 
 export const about = {
@@ -66,7 +69,7 @@ export const about = {
   ],
   marker: ['Residências', 'Comércios', 'Curitiba e região'],
   image: {
-    src: '/assets/gallery/02-execucao-em-campo.webp',
+    src: asset('assets/gallery/02-execucao-em-campo.webp'),
     alt: 'Técnico trabalhando junto à parede, abaixo de várias unidades condensadoras alinhadas em suportes.',
     width: 1441,
     height: 1800,
@@ -106,7 +109,7 @@ export const services: Service[] = [
     title: 'Instalação de ar-condicionado',
     messageName: 'instalação de ar-condicionado',
     description: 'Instalação conforme o equipamento, o ambiente e as exigências técnicas de cada modelo.',
-    src: '/assets/services/01-instalacao.webp',
+    src: asset('assets/services/01-instalacao.webp'),
     alt: '',
     icon: 'install',
     position: '50% 40%',
@@ -118,7 +121,7 @@ export const services: Service[] = [
     title: 'Manutenção preventiva',
     messageName: 'manutenção preventiva',
     description: 'Inspeção, limpeza e cuidados periódicos para preservar o funcionamento e reduzir falhas.',
-    src: '/assets/services/02-manutencao-preventiva.webp',
+    src: asset('assets/services/02-manutencao-preventiva.webp'),
     alt: '',
     icon: 'preventive',
     position: '50% 40%',
@@ -130,7 +133,7 @@ export const services: Service[] = [
     title: 'Manutenção corretiva',
     messageName: 'manutenção corretiva',
     description: 'Diagnóstico da falha e correção do que impede o aparelho de funcionar como deveria.',
-    src: '/assets/services/03-manutencao-corretiva.webp',
+    src: asset('assets/services/03-manutencao-corretiva.webp'),
     alt: '',
     icon: 'corrective',
     position: '50% 40%',
@@ -143,7 +146,7 @@ export const services: Service[] = [
     messageName: 'recarga de gás refrigerante',
     description:
       'Avaliação técnica antes de qualquer recarga, verificando possíveis vazamentos e as características do equipamento.',
-    src: '/assets/services/04-recarga-gas.webp',
+    src: asset('assets/services/04-recarga-gas.webp'),
     alt: '',
     icon: 'gas',
     position: '50% 40%',
@@ -155,7 +158,7 @@ export const services: Service[] = [
     title: 'Pequenos serviços de elétrica',
     messageName: 'pequenos serviços de elétrica',
     description: 'Pequenos ajustes e reparos elétricos ligados à instalação e ao funcionamento da climatização.',
-    src: '/assets/services/05-pequenos-servicos-eletrica.webp',
+    src: asset('assets/services/05-pequenos-servicos-eletrica.webp'),
     alt: '',
     icon: 'electric',
     position: '66% 50%',
@@ -168,7 +171,7 @@ export const services: Service[] = [
     title: 'Venda de ar-condicionado',
     messageName: 'venda de ar-condicionado',
     description: 'Orientação na escolha do equipamento mais adequado ao tamanho e ao uso de cada ambiente.',
-    src: '/assets/services/06-venda-ar-condicionado.webp',
+    src: asset('assets/services/06-venda-ar-condicionado.webp'),
     alt: '',
     icon: 'sale',
     position: '50% 40%',
@@ -181,7 +184,7 @@ export const services: Service[] = [
     messageName: 'infraestrutura para climatização',
     description:
       'Preparação e execução da infraestrutura necessária para receber o sistema: caminhos, suportes e passagens.',
-    src: '/assets/services/07-infraestrutura-horizontal.webp',
+    src: asset('assets/services/07-infraestrutura-horizontal.webp'),
     alt: '',
     icon: 'infra',
     position: '50% 45%',
@@ -207,7 +210,7 @@ export const slideData: Slide[] = [
   {
     title: 'Fachada com unidades externas',
     button: 'Ver foto',
-    src: '/assets/gallery/01-fachada-comercial.webp',
+    src: asset('assets/gallery/01-fachada-comercial.webp'),
     alt: 'Duas unidades condensadoras instaladas em suportes na fachada de um prédio comercial.',
     position: '62% 60%',
     width: 1778,
@@ -216,7 +219,7 @@ export const slideData: Slide[] = [
   {
     title: 'Instalação em campo',
     button: 'Ver foto',
-    src: '/assets/gallery/02-execucao-em-campo.webp',
+    src: asset('assets/gallery/02-execucao-em-campo.webp'),
     alt: 'Técnico trabalhando abaixo de uma fileira de unidades condensadoras alinhadas na parede.',
     position: '50% 45%',
     width: 1441,
@@ -225,7 +228,7 @@ export const slideData: Slide[] = [
   {
     title: 'Infraestrutura e tubulações',
     button: 'Ver foto',
-    src: '/assets/gallery/03-tubulacoes.webp',
+    src: asset('assets/gallery/03-tubulacoes.webp'),
     alt: 'Duas tubulações com isolamento térmico fixadas na parede.',
     position: '50% 50%',
     width: 1800,
@@ -234,7 +237,7 @@ export const slideData: Slide[] = [
   {
     title: 'Condensadoras em cobertura',
     button: 'Ver foto',
-    src: '/assets/gallery/04-condensadoras-cobertura.webp',
+    src: asset('assets/gallery/04-condensadoras-cobertura.webp'),
     alt: 'Fileira de unidades condensadoras instaladas ao longo de uma cobertura externa.',
     position: '50% 50%',
     width: 1800,
@@ -243,7 +246,7 @@ export const slideData: Slide[] = [
   {
     title: 'Equipamentos e preparação',
     button: 'Ver foto',
-    src: '/assets/gallery/05-equipamentos-ferramentas.webp',
+    src: asset('assets/gallery/05-equipamentos-ferramentas.webp'),
     alt: 'Unidades de ar-condicionado split, caixa de ferramentas e rolo de tubulação preparados para o serviço.',
     position: '45% 60%',
     width: 1800,
@@ -291,9 +294,9 @@ export const contactSection = {
 } as const
 
 export const lanyard = {
-  front: '/assets/lanyard/card-front.png',
-  back: '/assets/lanyard/card-back.png',
-  strap: '/assets/lanyard/band.png',
+  front: asset('assets/lanyard/card-front.png'),
+  back: asset('assets/lanyard/card-back.png'),
+  strap: asset('assets/lanyard/band.png'),
   frontAlt:
     'Crachá da Master Frio com o mascote boneco de neve de boné e uniforme azuis, segurando uma chave e um controle remoto.',
 } as const
@@ -302,5 +305,5 @@ export const footer = {
   legal: '© 2026 Master Frio Climatização. Todos os direitos reservados.',
   credit: 'Protótipo demonstrativo desenvolvido por Or7.Dev',
   prototypeTag: 'Protótipo / demonstração',
-  watermark: '/assets/brand/or7-watermark.png',
+  watermark: asset('assets/brand/or7-watermark.png'),
 } as const
