@@ -1,0 +1,162 @@
+[
+  {
+    "arquivo": "LEIA_PRIMEIRO.md",
+    "bytes": 2031,
+    "sha256": "5ee6d7fc37344ff794819abbb7f1dc0f1a3690c750afaee30651d3e9b555ed6e"
+  },
+  {
+    "arquivo": "PROMPT_MESTRE_MASTER_FRIO_CLAUDE_CODE.md",
+    "bytes": 41458,
+    "sha256": "aa6d86cdbdf3d6de2a69bd46b4cbe03b1603a8da8e52517eae867d95f844ba40"
+  },
+  {
+    "arquivo": "public/assets/brand/or7-watermark-original.png",
+    "bytes": 48099,
+    "sha256": "91ad8de23fa3a3beb9d58c8205de2905d5e490fcfcb27aedbd8b17a375d803b2"
+  },
+  {
+    "arquivo": "public/assets/brand/or7-watermark.png",
+    "bytes": 114057,
+    "sha256": "402b7ffa291ad255e194a55f07f8158628c49821b99f091586d8c31a6a6618a8"
+  },
+  {
+    "arquivo": "public/assets/brand/master-frio-logo-aprovado-referencia.png",
+    "bytes": 1584962,
+    "sha256": "94cfc2b9fc28a5a7b0dd52da18a5bd792c76c63f61f0f4fbdde4846bf0fbcad4"
+  },
+  {
+    "arquivo": "public/assets/brand/master-frio-icone-aprovado.png",
+    "bytes": 97826,
+    "sha256": "66e76a3a1cef89d9571e2af586fa98d9bf8f781ec150992ebd2d84b181e90994"
+  },
+  {
+    "arquivo": "public/assets/brand/master-frio-logo-original.jpg",
+    "bytes": 411349,
+    "sha256": "6d89ff2f07a7bfdf2b5429d4e37a6578f4e4194298a1dcd503db00f07c97c818"
+  },
+  {
+    "arquivo": "public/assets/fonts/SplineSans-Variable.woff2",
+    "bytes": 72300,
+    "sha256": "6b71fe81e44d8a6861ba9d50a8cd0487df053997d35c1777dffd375fcc038397"
+  },
+  {
+    "arquivo": "public/assets/fonts/OFL.txt",
+    "bytes": 4223,
+    "sha256": "ee2d2cee2389ac4f14be6f16e362a6d716d372c1e457f29c458e148af0265e69"
+  },
+  {
+    "arquivo": "public/assets/hero/master-frio-hero-ativo-referencia.webp",
+    "bytes": 113526,
+    "sha256": "735a953eab34a25f58120b659b673d5e1b5d72ece4da36adebad94f18183a084"
+  },
+  {
+    "arquivo": "public/assets/hero/master-frio-hero-poster.webp",
+    "bytes": 152024,
+    "sha256": "5e6c65d282b879dade42648eb6619aab2861d867a951bb6b2a337630331c35e7"
+  },
+  {
+    "arquivo": "public/assets/hero/master-frio-hero-loop.mp4",
+    "bytes": 2768424,
+    "sha256": "e3df51741aeee2f5aa5659f213e0b78124adbd473cd15b22409eda1a57cc402d"
+  },
+  {
+    "arquivo": "public/assets/services/02-manutencao-preventiva.webp",
+    "bytes": 160284,
+    "sha256": "70f8bd2b366ea5e7c6f49238b173aa4c7f7a5e1cad09a31683a688b47010c94b"
+  },
+  {
+    "arquivo": "public/assets/services/06-venda-ar-condicionado.webp",
+    "bytes": 141682,
+    "sha256": "f0ce5d99abf2ceba37c03992f62da5e4b7aa33f4d17bd571ae5c2221cff65901"
+  },
+  {
+    "arquivo": "public/assets/services/05-pequenos-servicos-eletrica.webp",
+    "bytes": 162842,
+    "sha256": "c789ebc1719e00ea42206d96d7bb02228e32452253dd1c10385e646724d76d96"
+  },
+  {
+    "arquivo": "public/assets/services/04-recarga-gas.webp",
+    "bytes": 174540,
+    "sha256": "447ba7e2181daf74c8a91e70ae0bdddc9f60edb0717cdce0451b94a11d51ad1c"
+  },
+  {
+    "arquivo": "public/assets/services/07-infraestrutura-horizontal.webp",
+    "bytes": 238492,
+    "sha256": "f84e164a3023ee3c19d21de05202f9c54bd5cebc57e244be10047e4e714346e2"
+  },
+  {
+    "arquivo": "public/assets/services/03-manutencao-corretiva.webp",
+    "bytes": 155824,
+    "sha256": "0569d977e6cfce27c1f48d4ff17ad4e11d8f983e21931fe085fd58fa5058760e"
+  },
+  {
+    "arquivo": "public/assets/services/01-instalacao.webp",
+    "bytes": 82780,
+    "sha256": "68b368feeea0c5465ee1d60930bf463b8080dc510610e4c7b2a52e39bfc68f78"
+  },
+  {
+    "arquivo": "public/assets/lanyard/card-back.png",
+    "bytes": 1924956,
+    "sha256": "663a025c4527dca17d4af921e29c05b933622dfb9d4accac8066c0fcb1780b3a"
+  },
+  {
+    "arquivo": "public/assets/lanyard/band.png",
+    "bytes": 1714061,
+    "sha256": "4769698240cdec3dec2a449ac2a595a2a3ba27a61cc10970c335b5400806ce09"
+  },
+  {
+    "arquivo": "public/assets/lanyard/card-front.png",
+    "bytes": 2069417,
+    "sha256": "b2a242c15e68a2baf6ae97dd08952f3eda2f7be10d35bda5b595e18b770202ba"
+  },
+  {
+    "arquivo": "public/assets/gallery/04-condensadoras-cobertura.webp",
+    "bytes": 206154,
+    "sha256": "947895053cf7ce7f34a06716eeedffd5d730c39b25a917886c0980b2215a782e"
+  },
+  {
+    "arquivo": "public/assets/gallery/02-execucao-em-campo.webp",
+    "bytes": 320878,
+    "sha256": "cd1bca76dd6f0fd675c2de6d53be8555feb1202b2c2e27cca51d0b6da1a0cc72"
+  },
+  {
+    "arquivo": "public/assets/gallery/01-fachada-comercial.webp",
+    "bytes": 148948,
+    "sha256": "d0c48895b5fc72db6eaee8aa6f6346c8ceac4821b8539fdc24e39ece81b1866f"
+  },
+  {
+    "arquivo": "public/assets/gallery/03-tubulacoes.webp",
+    "bytes": 163484,
+    "sha256": "9b516360de104279de5d89c31a2325b256858760938765363b7b87babf052628"
+  },
+  {
+    "arquivo": "public/assets/gallery/05-equipamentos-ferramentas.webp",
+    "bytes": 153106,
+    "sha256": "81cac5fb41530b223bb40b3ae9fc1b6591bcc083a2567b11ed61e2dd76fa7dab"
+  },
+  {
+    "arquivo": "referencias/galeria-8k/01-fachada-comercial-8k.jpg",
+    "bytes": 3194058,
+    "sha256": "5d7a9d78a9f58338f975697c47445917a5247884271c98d22baafc3f1d677629"
+  },
+  {
+    "arquivo": "referencias/galeria-8k/02-execucao-em-campo-8k.jpg",
+    "bytes": 4444164,
+    "sha256": "df34a7d2659d6e9e3bd9f6ed7269dd2675105f757967b6ba8d6b92c5f1ef15a6"
+  },
+  {
+    "arquivo": "referencias/galeria-8k/04-condensadoras-cobertura-8k.jpg",
+    "bytes": 3237306,
+    "sha256": "ff997f58c76312ad39e8ecf962a9ca70ce784fcdf533bf2b05e3e662fe68bbf8"
+  },
+  {
+    "arquivo": "referencias/galeria-8k/05-equipamentos-ferramentas-8k.jpg",
+    "bytes": 2757843,
+    "sha256": "7b14d4224820faeb6a1e068a2e29c85a44d4bac190dfddbc77983ca41d6b9e91"
+  },
+  {
+    "arquivo": "referencias/galeria-8k/03-tubulacoes-8k.jpg",
+    "bytes": 3087491,
+    "sha256": "03513116e86e8e35346950ec120a0072686d1ff72b63086ff57c1bc63407d6c6"
+  }
+]

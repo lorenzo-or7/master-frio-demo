@@ -11,6 +11,10 @@
  * 4. `maxPixelRatio` limita o DPR (ex.: 1.5 em ponteiro grosso).
  * 5. `onUnsupported`: avisa o pai se o WebGL falhar ou o contexto for perdido (fallback estático).
  * 6. `flipSignal`: permite virar o crachá por um botão HTML acessível (teclado).
+ * 7. Brisa com envelope: atua ~4 s após a entrada/interação e se dissipa em ~3 s. Assim o crachá
+ *    assenta e o loop de render para sozinho (sem movimento permanente desnecessário).
+ * 8. Critério de repouso pondera menos o tremor numérico dos nós da fita (ver stepSimulation) e,
+ *    depois da brisa, o amortecimento cresce em ~3 s até o crachá assentar.
  */
 
 import { useEffect, useRef } from 'react';
@@ -928,7 +932,9 @@ const stepSimulation = (sim: Simulation, dt: number, physics: Physics, time: num
   if (grab) grab.from.copy(grab.target);
 
   let energy = body.velocity.lengthSq() + body.angular.lengthSq() * 0.3;
-  for (let i = 1; i < JOINTS; i++) energy += velocities[i].lengthSq() * 0.05;
+  // Adaptação Master Frio: peso menor para os nós da fita. Eles mantêm um tremor numérico
+  // invisível (~0,1 px/quadro) que impedia o repouso e deixava o render ligado para sempre.
+  for (let i = 1; i < JOINTS; i++) energy += velocities[i].lengthSq() * 0.004;
   sim.calm = energy < 2e-4 ? sim.calm + dt : 0;
 };
 
@@ -1129,6 +1135,9 @@ const Lanyard = ({
     let raf = 0;
     let last = performance.now();
     let time = 0;
+    let breezeFrom = 0;
+    let smoothEnergy = 1;
+    let settledFor = 0;
     let visible = true;
     let alive = true;
     let placed = false;
@@ -1363,24 +1372,28 @@ const Lanyard = ({
       const weight = Math.max(gravity, 20);
       const springy = clamp(s.elasticity, 0, 1);
       const settle = clamp(s.damping, 0, 1);
+      // Adaptação Master Frio: após a brisa se dissipar, o amortecimento cresce aos poucos para que o
+      // balanço residual morra de forma natural e o loop de render possa parar.
+      const rest = clamp((time - breezeFrom - 7) / 3, 0, 1);
+      const calmDrag = 1 + 5 * rest;
       return {
         gravity,
         hold: weight * mix(2.2, 5.5, springy),
         stiffness: weight * 10 * JOINTS,
         spring: weight * mix(0.1, 0.4, springy) * JOINTS,
         bandDamping: weight * mix(0.3, 0.08, springy) * JOINTS,
-        linearDrag: 0.25 * Math.pow(16, settle),
-        angularDrag: 0.5 * Math.pow(12, settle),
+        linearDrag: 0.25 * Math.pow(16, settle) * calmDrag,
+        angularDrag: 0.5 * Math.pow(12, settle) * calmDrag,
         air: 0.15,
         broadside: 0.5,
         spinAir: 0.03,
-        nodeDrag: 2,
+        nodeDrag: 2 * calmDrag,
         nodeAir: 0.2,
         twist: 30,
         twistDamping: 3,
         grip: 40,
         gripDamping: 6,
-        breeze: reducedMotion ? 0 : clamp(s.breeze, 0, 1)
+        breeze: reducedMotion ? 0 : clamp(s.breeze, 0, 1) * clamp(1 - (time - breezeFrom - 4) / 3, 0, 1)
       };
     };
 
@@ -1398,13 +1411,21 @@ const Lanyard = ({
         placeHanging(sim, layout, false);
       }
       render();
-      const resting = sim.calm > 1.2 && !sim.grab && current.breeze === 0;
+      // Adaptação Master Frio: o solver mantém um piso de ruído (~1e-4 a 2e-3) acima do limite original.
+      // Depois que a brisa e o amortecimento extra terminam, uma energia suavizada abaixo desse piso
+      // por 0,6 s também conta como repouso — o crachá já está visualmente parado.
+      const e = body.velocity.lengthSq() + body.angular.lengthSq() * 0.3;
+      smoothEnergy = smoothEnergy * 0.9 + e * 0.1;
+      const settledPhase = time - breezeFrom > 10 && !sim.grab;
+      settledFor = settledPhase && smoothEnergy < 3e-3 ? settledFor + dt : 0;
+      const resting = (sim.calm > 1.2 || settledFor > 0.6) && !sim.grab && current.breeze === 0;
       if (visible && !resting) raf = requestAnimationFrame(tick);
     };
 
     const start = () => {
       if (raf || !visible || !alive) return;
       sim.calm = 0;
+      settledFor = 0;
       last = performance.now();
       raf = requestAnimationFrame(tick);
     };
@@ -1440,6 +1461,7 @@ const Lanyard = ({
         direction = scratch.b.subVectors(point, body.position).cross(away).dot(up) < 0 ? -1 : 1;
       }
       sim.turn = sim.turn === 0 ? Math.PI * direction : 0;
+      breezeFrom = time;
       body.angular.addScaledVector(up, FLIP_SPIN * direction);
     };
 
@@ -1463,6 +1485,7 @@ const Lanyard = ({
         target: hit.point.clone()
       };
       press = { x: event.clientX, y: event.clientY, time: performance.now(), point: hit.point.clone() };
+      breezeFrom = time;
       canvas.setPointerCapture?.(event.pointerId);
       setCursor('grabbing');
       if (!(optionsRef.current.touchScroll && event.pointerType === 'touch')) event.preventDefault();

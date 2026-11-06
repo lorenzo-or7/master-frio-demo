@@ -5,10 +5,10 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { hero, whatsappUrl } from '@/data/site'
 import { usePrefersReducedMotion } from '@/hooks/useMediaQuery'
+import { MaskLines } from '@/components/ui/Reveal'
+import { EASE } from '@/lib/motion'
 
 gsap.registerPlugin(ScrollTrigger)
-
-const EASE = [0.22, 1, 0.36, 1] as const
 
 type NetworkInfo = { saveData?: boolean }
 
@@ -18,6 +18,7 @@ export function Hero() {
   const shadeRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const ringRef = useRef<SVGCircleElement>(null)
   const reduced = usePrefersReducedMotion()
 
   /** O vídeo só recebe src depois da primeira pintura (poster e texto primeiro). */
@@ -80,7 +81,21 @@ export function Hero() {
     if (reduced) videoRef.current?.pause()
   }, [reduced])
 
-  // Cinematic scroll: zoom 1 → 1.04, deslocamento pequeno, sombra cresce. Scrub suave, sem pin.
+  // Anel de progresso do ciclo do vídeo (só enquanto toca; nenhum loop quando pausado).
+  useEffect(() => {
+    if (!playing) return
+    const loop = { id: 0 }
+    const tick = () => {
+      const v = videoRef.current
+      const ring = ringRef.current
+      if (v && ring && v.duration) ring.style.strokeDashoffset = String(1 - v.currentTime / v.duration)
+      loop.id = requestAnimationFrame(tick)
+    }
+    loop.id = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(loop.id)
+  }, [playing])
+
+  // Cinematic scroll: zoom 1 → 1.04, deslocamento mínimo, sombra progressiva. Scrub suave, sem pin.
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
@@ -88,11 +103,12 @@ export function Hero() {
     mm.add('(prefers-reduced-motion: no-preference)', () => {
       const tl = gsap.timeline({
         defaults: { ease: 'none' },
-        scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: 0.6 },
+        scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: 0.8 },
       })
-      tl.to(mediaRef.current, { scale: 1.04, yPercent: 3 }, 0)
-        .to(shadeRef.current, { opacity: 0.55 }, 0)
-        .to(contentRef.current, { y: -28 }, 0)
+      tl.to(mediaRef.current, { scale: 1.04, yPercent: 2.5 }, 0)
+        .to(shadeRef.current, { opacity: 0.62 }, 0)
+        // Só deslocamento: reduzir a opacidade do texto ainda visível baixaria o contraste do CTA.
+        .to(contentRef.current, { y: -36 }, 0)
     })
     return () => mm.revert()
   }, [])
@@ -115,22 +131,14 @@ export function Hero() {
     }
   }
 
-  const lineMotion = (i: number) =>
+  // Coreografia de entrada: eyebrow → linhas do título → apoio → ações.
+  const enter = (delay: number, y = 10) =>
     reduced
       ? {}
       : {
-          initial: { y: '108%' },
-          animate: { y: '0%' },
-          transition: { duration: 0.6, ease: EASE, delay: 0.12 + i * 0.09 },
-        }
-
-  const fadeUp = (delay: number) =>
-    reduced
-      ? {}
-      : {
-          initial: { opacity: 0, y: 14 },
+          initial: { opacity: 0, y },
           animate: { opacity: 1, y: 0 },
-          transition: { duration: 0.55, ease: EASE, delay },
+          transition: { duration: 0.6, ease: EASE, delay },
         }
 
   return (
@@ -145,6 +153,8 @@ export function Hero() {
         <img
           className="hero-poster"
           src={hero.poster}
+          srcSet={`${hero.posterSmall} 1280w, ${hero.poster} 1672w`}
+          sizes="100vw"
           alt=""
           width={1672}
           height={941}
@@ -187,40 +197,47 @@ export function Hero() {
       </div>
 
       <div className="hero-content shell" ref={contentRef}>
-        <h1 id="hero-title" className="hero-title">
-          {hero.lines.map((line, i) => (
-            <span className="line-mask" key={line}>
-              <motion.span className="line-inner" {...lineMotion(i)}>
-                {line}
-              </motion.span>
-            </span>
-          ))}
-        </h1>
-        <motion.p className="hero-support" {...fadeUp(0.34)}>
+        <motion.p className="hero-eyebrow" {...enter(0.05, 6)}>
+          <span className="hero-eyebrow-dot" aria-hidden="true" />
+          {hero.eyebrow}
+        </motion.p>
+        <MaskLines
+          as="h1"
+          id="hero-title"
+          className="hero-title"
+          lines={hero.lines}
+          onMount
+          delay={0.14}
+        />
+        <motion.p className="hero-support" {...enter(0.42)}>
           {hero.support}
         </motion.p>
-        <motion.div className="hero-ctas" {...fadeUp(0.42)}>
-          <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+        <motion.div className="hero-ctas" {...enter(0.52)}>
+          <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg">
             {hero.primaryCta}
             <ArrowUpRight size={18} className="btn-arrow" aria-hidden="true" />
             <span className="sr-only"> pelo WhatsApp (abre em nova aba)</span>
           </a>
-          <a href="#servicos" className="btn btn-ghost">
+          <a href="#servicos" className="btn btn-ghost hero-secondary">
             {hero.secondaryCta}
-            <ArrowDown size={18} aria-hidden="true" />
+            <ArrowDown size={17} aria-hidden="true" />
           </a>
+          <button
+            type="button"
+            className="hero-video-toggle"
+            onClick={onToggleVideo}
+            aria-label={playing ? 'Pausar vídeo de fundo' : 'Reproduzir vídeo de fundo'}
+            title={playing ? 'Pausar vídeo' : 'Reproduzir vídeo'}
+          >
+            <svg className="hero-video-ring" viewBox="0 0 44 44" aria-hidden="true">
+              <circle cx="22" cy="22" r="20" pathLength={1} className="ring-track" />
+              <circle ref={ringRef} cx="22" cy="22" r="20" pathLength={1} className="ring-progress" />
+            </svg>
+            {playing ? <Pause size={15} aria-hidden="true" /> : <Play size={15} aria-hidden="true" />}
+          </button>
         </motion.div>
       </div>
 
-      <button
-        type="button"
-        className="hero-video-toggle"
-        onClick={onToggleVideo}
-        aria-label={playing ? 'Pausar vídeo de fundo' : 'Reproduzir vídeo de fundo'}
-        title={playing ? 'Pausar vídeo' : 'Reproduzir vídeo'}
-      >
-        {playing ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}
-      </button>
     </section>
   )
 }

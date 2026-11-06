@@ -21,22 +21,21 @@ const scrollTo = (page: Page, selector: string) =>
 test.describe('Estrutura e SEO de protótipo', () => {
   test('um único h1, pt-BR, noindex e ordem das seções', async ({ page }) => {
     const errors = collectErrors(page)
-    await page.goto('/')
+    await page.goto('./')
     await expect(page.locator('h1')).toHaveCount(1)
-    await expect(page.locator('h1')).toContainText('Climatização de qualidade.')
-    await expect(page.locator('h1')).toContainText('Conforto em todos os ambientes.')
+    await expect(page.locator('h1')).toHaveText('Frio na medida do seu ambiente.')
     await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR')
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex,\s*nofollow/)
     const ids = await page.locator('main > section').evaluateAll((els) => els.map((e) => e.id))
     expect(ids).toEqual(['inicio', 'sobre', 'servicos', 'trabalhos', 'como-trabalhamos', 'atendimento', 'contato'])
     await expect(page.locator('footer')).toContainText('© 2026 Master Frio Climatização. Todos os direitos reservados.')
     await expect(page.locator('footer')).toContainText('Protótipo demonstrativo desenvolvido por Or7.Dev')
-    await expect(page.locator('footer img[src="/assets/brand/or7-watermark.png"]')).toHaveCount(1)
+    await expect(page.locator('footer img[src$="assets/brand/or7-watermark.png"]')).toHaveCount(1)
     expect(errors).toEqual([])
   })
 
   test('Spline Sans carregada e aplicada', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     await page.evaluate(() => document.fonts.ready)
     const loaded = await page.evaluate(() => document.fonts.check('700 16px "Spline Sans"'))
     expect(loaded).toBe(true)
@@ -47,7 +46,7 @@ test.describe('Estrutura e SEO de protótipo', () => {
   })
 
   test('sem dados não confirmados na interface', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     const text = await page.locator('body').innerText()
     for (const forbidden of ['99680-7443', '65.121.715', 'Monge Guido', '5 anos', 'R$', 'PMOC']) {
       expect(text).not.toContain(forbidden)
@@ -57,7 +56,7 @@ test.describe('Estrutura e SEO de protótipo', () => {
 
 test.describe('WhatsApp e Instagram', () => {
   test('todos os links de WhatsApp usam o mesmo número e são seguros', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     const links = page.locator('a[href*="wa.me"]')
     const count = await links.count()
     expect(count).toBeGreaterThanOrEqual(11)
@@ -74,7 +73,7 @@ test.describe('WhatsApp e Instagram', () => {
   })
 
   test('cada um dos 7 serviços abre o WhatsApp com mensagem específica', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     const expected = [
       'instalação de ar-condicionado',
       'manutenção preventiva',
@@ -95,7 +94,7 @@ test.describe('WhatsApp e Instagram', () => {
   })
 
   test('Instagram acessível por link direto (sem depender do QR)', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     const ig = page.locator(`a[href="${IG}"]`)
     expect(await ig.count()).toBeGreaterThanOrEqual(2)
     await expect(page.locator('#contato').locator(`a[href="${IG}"]`).first()).toBeVisible()
@@ -105,7 +104,7 @@ test.describe('WhatsApp e Instagram', () => {
 
 test.describe('Floating Nav e Frost Switch', () => {
   test('desktop: links de âncora levam às seções sem ficar atrás da nav', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     await page.locator('.nav-links a[href="#servicos"]').click()
     await page.waitForTimeout(1200)
     const top = await page.locator('#servicos').evaluate((el) => el.getBoundingClientRect().top)
@@ -115,7 +114,7 @@ test.describe('Floating Nav e Frost Switch', () => {
   })
 
   test('tema alterna, persiste após reload e o rótulo acompanha', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'night')
     const sw = page.getByRole('button', { name: 'Ativar tema claro' })
     await sw.click()
@@ -129,7 +128,7 @@ test.describe('Floating Nav e Frost Switch', () => {
   })
 
   test('alternar tema no meio da página não reinicia o vídeo nem rola a página', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     await scrollTo(page, '#trabalhos')
     await page.waitForTimeout(300)
     // A nav se oculta ao descer; uma pequena subida a traz de volta.
@@ -147,7 +146,7 @@ test.describe('Mobile', () => {
   test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true })
 
   test('menu: abre, navega para serviços, fecha; Escape devolve o foco; clique fora fecha', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     const toggle = page.getByRole('button', { name: 'Abrir menu' })
     await expect(toggle).toBeVisible()
     const box = (await toggle.boundingBox())!
@@ -175,7 +174,7 @@ test.describe('Mobile', () => {
   })
 
   test('hero: aparelho visível no topo e texto abaixo, sem sobreposição dos CTAs', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     const media = await page.locator('.hero-media').boundingBox()
     const title = await page.locator('.hero-title').boundingBox()
     const ctas = await page.locator('.hero-ctas').boundingBox()
@@ -187,7 +186,7 @@ test.describe('Mobile', () => {
 
 test.describe('Serviços — Focus Cards', () => {
   test('layout 3×2 + 1 horizontal de largura total no desktop', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     const boxes = await page.locator('.fc-card').evaluateAll((els) =>
       els.map((e) => {
         const r = e.getBoundingClientRect()
@@ -205,7 +204,7 @@ test.describe('Serviços — Focus Cards', () => {
   })
 
   test('hover desfoca só as fotos dos demais; texto e CTA continuam nítidos', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     await scrollTo(page, '#servicos')
     await page.locator('.fc-card').first().hover()
     await page.waitForTimeout(500)
@@ -223,7 +222,7 @@ test.describe('Serviços — Focus Cards', () => {
   })
 
   test('foco por teclado ativa o card e Escape remove o destaque', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     await page.locator('.fc-card .fc-cta').nth(2).focus()
     await expect(page.locator('.fc-card').nth(2)).toHaveAttribute('data-state', 'active')
     await page.keyboard.press('Escape')
@@ -233,16 +232,16 @@ test.describe('Serviços — Focus Cards', () => {
 
 test.describe('Trabalhos reais — Carousel e lightbox', () => {
   test('5 fotos reais, setas, teclado e swipe', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     const imgs = page.locator('.car-slide img')
     await expect(imgs).toHaveCount(5)
     const srcs = await imgs.evaluateAll((els) => els.map((e) => e.getAttribute('src')))
-    expect(srcs).toEqual([
-      '/assets/gallery/01-fachada-comercial.webp',
-      '/assets/gallery/02-execucao-em-campo.webp',
-      '/assets/gallery/03-tubulacoes.webp',
-      '/assets/gallery/04-condensadoras-cobertura.webp',
-      '/assets/gallery/05-equipamentos-ferramentas.webp',
+    expect(srcs.map((x) => x!.slice(x!.indexOf('assets/')))).toEqual([
+      'assets/gallery/01-fachada-comercial.webp',
+      'assets/gallery/02-execucao-em-campo.webp',
+      'assets/gallery/03-tubulacoes.webp',
+      'assets/gallery/04-condensadoras-cobertura.webp',
+      'assets/gallery/05-equipamentos-ferramentas.webp',
     ])
     await scrollTo(page, '#trabalhos')
     const count = page.locator('.car-count-current')
@@ -274,12 +273,13 @@ test.describe('Trabalhos reais — Carousel e lightbox', () => {
   })
 
   test('"Ver foto" abre lightbox acessível; Escape fecha e devolve a página', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
+    const startUrl = page.url()
     await scrollTo(page, '#trabalhos')
     await page.locator('.car-slide.is-current .car-open').click()
     const dialog = page.locator('dialog.lightbox')
     await expect(dialog).toHaveJSProperty('open', true)
-    await expect(dialog.locator('img')).toHaveAttribute('src', '/assets/gallery/01-fachada-comercial.webp')
+    await expect(dialog.locator('img')).toHaveAttribute('src', /assets\/gallery\/01-fachada-comercial.webp$/)
     await expect(dialog.getByRole('button', { name: 'Fechar' })).toBeFocused()
     // A foto ampliada cabe inteira na tela
     const shown = await dialog.locator('img').evaluate((img: HTMLImageElement) => {
@@ -289,7 +289,7 @@ test.describe('Trabalhos reais — Carousel e lightbox', () => {
     expect(shown.bottom).toBeLessThanOrEqual(shown.vh)
     expect(shown.right).toBeLessThanOrEqual(shown.vw)
     await page.keyboard.press('ArrowRight')
-    await expect(dialog.locator('img')).toHaveAttribute('src', '/assets/gallery/02-execucao-em-campo.webp')
+    await expect(dialog.locator('img')).toHaveAttribute('src', /assets\/gallery\/02-execucao-em-campo.webp$/)
     await page.keyboard.press('Escape')
     await expect(dialog).toHaveJSProperty('open', false)
 
@@ -298,16 +298,33 @@ test.describe('Trabalhos reais — Carousel e lightbox', () => {
     await expect(dialog).toHaveJSProperty('open', true)
     await page.goBack()
     await expect(dialog).toHaveJSProperty('open', false)
-    await expect(page).toHaveURL(/localhost:4173\/?$/)
+    expect(page.url()).toBe(startUrl)
+
+    // Clique duplo rápido em "Fechar" não sai da página (history.back só uma vez)
+    await page.locator('.car-slide.is-current .car-open').click()
+    await expect(dialog).toHaveJSProperty('open', true)
+    await dialog.getByRole('button', { name: 'Fechar' }).dblclick()
+    await page.waitForTimeout(600)
+    await expect(dialog).toHaveJSProperty('open', false)
+    expect(page.url()).toBe(startUrl)
+    await expect(page.locator('#trabalhos')).toBeVisible()
+  })
+
+  test('indicador segmentado leva direto a uma foto', async ({ page }) => {
+    await page.goto('./')
+    await scrollTo(page, '#trabalhos')
+    await page.getByRole('button', { name: /Foto 4: Condensadoras em cobertura/ }).click()
+    await expect(page.locator('.car-count-current')).toHaveText('04')
+    await expect(page.getByRole('button', { name: /Foto 4:/ })).toHaveAttribute('aria-current', 'true')
   })
 })
 
 test.describe('Hero — vídeo e fallbacks', () => {
   test('poster imediato; vídeo aprovado carrega depois; botão de pausa funciona', async ({ page }) => {
-    await page.goto('/')
-    await expect(page.locator('.hero-poster')).toHaveAttribute('src', '/assets/hero/master-frio-hero-poster.webp')
+    await page.goto('./')
+    await expect(page.locator('.hero-poster')).toHaveAttribute('src', /assets\/hero\/master-frio-hero-poster.webp$/)
     const video = page.locator('video.hero-video')
-    await expect(video).toHaveAttribute('src', '/assets/hero/master-frio-hero-loop.mp4')
+    await expect(video).toHaveAttribute('src', /assets\/hero\/master-frio-hero-loop.mp4$/)
     await expect.poll(() => video.evaluate((v: HTMLVideoElement) => !v.paused), { timeout: 15_000 }).toBe(true)
     expect(await video.evaluate((v: HTMLVideoElement) => v.muted && v.loop && v.playsInline && !v.controls)).toBe(true)
     await page.getByRole('button', { name: 'Pausar vídeo de fundo' }).click()
@@ -323,7 +340,7 @@ test.describe('Hero — vídeo e fallbacks', () => {
   })
 
   test('pausa automaticamente fora da viewport', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     const video = page.locator('video.hero-video')
     await expect.poll(() => video.evaluate((v: HTMLVideoElement) => !v.paused), { timeout: 15_000 }).toBe(true)
     await scrollTo(page, '#trabalhos')
@@ -346,7 +363,7 @@ test.describe('Hero — vídeo e fallbacks', () => {
           })
       }).observe(document, { childList: true, subtree: true })
     })
-    await page.goto('/')
+    await page.goto('./')
     await page.waitForTimeout(2500)
     await expect(page.locator('.hero-poster')).toBeVisible()
     await expect(page.getByRole('button', { name: 'Reproduzir vídeo de fundo' })).toBeVisible()
@@ -359,7 +376,7 @@ test.describe('Reduced motion', () => {
 
   test('sem vídeo automático e crachá estático com links', async ({ page }) => {
     const errors = collectErrors(page)
-    await page.goto('/')
+    await page.goto('./')
     await page.waitForTimeout(1500)
     await expect(page.locator('video.hero-video')).toHaveCount(0)
     await expect(page.locator('.hero-poster')).toBeVisible()
@@ -383,13 +400,13 @@ test.describe('Contato — Lanyard', () => {
     const errors = collectErrors(page)
     const requested: string[] = []
     page.on('request', (r) => requested.push(new URL(r.url()).pathname))
-    await page.goto('/')
+    await page.goto('./')
     await page.waitForTimeout(800)
-    expect(requested.some((p) => p.includes('card-front.png'))).toBe(false)
+    expect(requested.some((p) => p.includes('card-front.webp'))).toBe(false)
     await scrollTo(page, '#contato')
     await expect(page.locator('.lanyard-region canvas')).toHaveCount(1, { timeout: 15_000 })
     await expect(page.locator('.lanyard-canvas.is-ready')).toHaveCount(1, { timeout: 15_000 })
-    for (const f of ['card-front.png', 'card-back.png', 'band.png']) {
+    for (const f of ['card-front.webp', 'card-back.webp', 'band.webp']) {
       expect(requested.some((p) => p.endsWith(`/assets/lanyard/${f}`))).toBe(true)
     }
     // Arraste real sobre o crachá (mouse)
@@ -404,8 +421,8 @@ test.describe('Contato — Lanyard', () => {
     await page.mouse.up()
     await page.getByRole('button', { name: 'Virar crachá' }).click()
     // links ao lado continuam clicáveis (crachá não bloqueia)
-    await expect(page.locator('#contato a[href*="wa.me"]')).toBeVisible()
-    await page.locator('#contato a[href*="wa.me"]').hover()
+    await expect(page.locator('#contato .contact-actions a[href*="wa.me"]')).toBeVisible()
+    await page.locator('#contato .contact-actions a[href*="wa.me"]').hover()
     expect(errors).toEqual([])
   })
 
@@ -422,7 +439,7 @@ test.describe('Contato — Lanyard', () => {
         return orig.call(this, type, ...args)
       }
     })
-    await page.goto('/')
+    await page.goto('./')
     await scrollTo(page, '#contato')
     await page.waitForTimeout(1000)
     await expect(page.locator('.lanyard-region')).toHaveAttribute('data-mode', 'static')
@@ -435,12 +452,14 @@ test.describe('Contato — Lanyard', () => {
 test.describe('Responsividade — sem overflow horizontal', () => {
   const sizes = [
     [320, 568], [360, 800], [375, 667], [390, 844], [393, 852], [412, 915], [430, 932],
-    [768, 1024], [1024, 768], [1280, 800], [1440, 900], [1920, 1080], [844, 390],
+    [768, 1024], [820, 1180], [1024, 768], [1280, 800], [1440, 900], [1920, 1080], [844, 390],
+    // Zoom de 200% em telas de 1280×800 e 1440×900 equivale a estas viewports CSS:
+    [640, 400], [720, 450],
   ] as const
   for (const [w, h] of sizes) {
     test(`${w}×${h}`, async ({ page }) => {
       await page.setViewportSize({ width: w, height: h })
-      await page.goto('/')
+      await page.goto('./')
       const total = await page.evaluate(() => document.body.scrollHeight)
       for (let y = 0; y < total; y += Math.floor(h * 0.8)) {
         await page.evaluate((yy) => window.scrollTo({ top: yy, behavior: 'instant' }), y)
@@ -466,7 +485,7 @@ test.describe('Acessibilidade (axe-core, WCAG 2.x A/AA)', () => {
   for (const theme of ['night', 'day'] as const) {
     test(`tema ${theme}`, async ({ page }) => {
       await page.addInitScript((t) => localStorage.setItem('mf-theme', t), theme)
-      await page.goto('/')
+      await page.goto('./')
       // Revela todos os blocos (animações de entrada concluídas) antes da análise
       const total = await page.evaluate(() => document.body.scrollHeight)
       for (let y = 0; y < total; y += 600) {
@@ -485,7 +504,7 @@ test.describe('Acessibilidade (axe-core, WCAG 2.x A/AA)', () => {
   }
 
   test('Tab percorre CTAs com foco visível e sem armadilha', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     const seen = new Set<string>()
     for (let i = 0; i < 80; i++) {
       await page.keyboard.press('Tab')
@@ -495,7 +514,9 @@ test.describe('Acessibilidade (axe-core, WCAG 2.x A/AA)', () => {
         const cs = getComputedStyle(el)
         const visible = cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) > 0
         const cardRing = !!el.closest('.fc-card') && getComputedStyle(el.closest('.fc-card')!).outlineStyle !== 'none'
-        return { key: `${el.tagName}:${el.textContent?.trim().slice(0, 30)}:${el.getAttribute('href') ?? ''}`, visible: visible || cardRing }
+        const track = el.querySelector('.frost-track')
+        const switchRing = !!track && getComputedStyle(track).outlineStyle !== 'none'
+        return { key: `${el.tagName}:${el.textContent?.trim().slice(0, 30)}:${el.getAttribute('href') ?? ''}`, visible: visible || cardRing || switchRing }
       })
       // Ao fim da página o foco volta à interface do navegador (body): ciclo completo, sem armadilha.
       if (info === null) break

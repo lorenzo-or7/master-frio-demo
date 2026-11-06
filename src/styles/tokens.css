@@ -15,6 +15,12 @@
   --ice: #7dd4ff;
   --divider: #22466c;
 
+  /* Superfícies derivadas de #07182F / #102B52 */
+  --surface-1: #07182f;
+  --surface-2: #0a1f3d;
+  --surface-3: #102b52;
+  --band: #075aa3;
+
   --focus: #7dd4ff;
   --surface-line: rgb(185 205 226 / 0.16);
   --nav-surface: rgb(7 24 47 / 0.82);
@@ -36,6 +42,11 @@
   --cta-hover: #075aa3;
   --ice: #075aa3;
   --divider: #ceddea;
+
+  --surface-1: #f4f8fc;
+  --surface-2: #ffffff;
+  --surface-3: #e8f0f8;
+  --band: #075aa3;
 
   --focus: #075aa3;
   --surface-line: rgb(7 38 75 / 0.12);
@@ -71,8 +82,8 @@
   --font-sans: 'Spline Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   /* Escala tipográfica fluida */
-  --fs-hero: clamp(2.3rem, 1.1rem + 3.5vw, 4.5rem);
-  --fs-h2: clamp(2rem, 1.25rem + 2.9vw, 3.75rem);
+  --fs-hero: clamp(2.45rem, 1.2rem + 3.9vw, 5.1rem);
+  --fs-h2: clamp(2rem, 1.3rem + 2.6vw, 4rem);
   --fs-h3: clamp(1.15rem, 1.02rem + 0.45vw, 1.45rem);
   --fs-lead: clamp(1.08rem, 1rem + 0.35vw, 1.3rem);
   --fs-body: 1rem;

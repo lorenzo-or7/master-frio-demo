@@ -1,8 +1,8 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import { MessageCircle, RotateCcw } from 'lucide-react'
-import { contact, contactSection, lanyard, whatsappUrl } from '@/data/site'
+import { MapPin, MessageCircle, RotateCcw } from 'lucide-react'
+import { brand, contact, contactSection, lanyard, whatsappUrl } from '@/data/site'
 import { InstagramIcon } from '@/components/ui/icons'
-import { Reveal } from '@/components/ui/Reveal'
+import { Eyebrow, MaskLines, Reveal } from '@/components/ui/Reveal'
 import { useMediaQuery, usePrefersReducedMotion } from '@/hooks/useMediaQuery'
 
 // three.js só é baixado quando a seção Contato se aproxima da viewport.
@@ -70,31 +70,51 @@ export function Contact() {
   const use3D = near && supported && !reduced
 
   return (
-    <section id="contato" className="section contact" aria-labelledby="contato-title">
+    <section id="contato" className="section contact surface-2" aria-labelledby="contato-title">
       <div className="shell contact-grid">
         <div className="contact-copy">
-          <Reveal>
-            <p className="eyebrow">{contactSection.eyebrow}</p>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <h2 id="contato-title" className="h2 contact-title">
-              {contactSection.title}
-            </h2>
-          </Reveal>
-          <Reveal delay={0.12}>
+          <Eyebrow>{contactSection.eyebrow}</Eyebrow>
+          <MaskLines
+            id="contato-title"
+            className="h2 contact-title"
+            lines={['Seu conforto', 'começa aqui.']}
+            delay={0.08}
+          />
+          <Reveal variant="fade" delay={0.28}>
             <p className="lead">{contactSection.text}</p>
           </Reveal>
-          <Reveal delay={0.18} className="contact-actions">
-            <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+          <Reveal delay={0.36} className="contact-actions">
+            <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg">
               <MessageCircle size={18} aria-hidden="true" />
               {contactSection.cta}
               <span className="sr-only"> (abre em nova aba)</span>
             </a>
-            <a href={contact.instagramUrl} target="_blank" rel="noopener noreferrer" className="text-link">
-              <InstagramIcon size={18} />
-              {contact.instagramHandle}
-              <span className="sr-only"> no Instagram (abre em nova aba)</span>
-            </a>
+          </Reveal>
+          <Reveal variant="fade" delay={0.46}>
+            <ul className="contact-channels" role="list">
+              <li>
+                <span className="contact-channel-label">WhatsApp</span>
+                <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer">
+                  {contact.whatsappDisplay}
+                  <span className="sr-only"> (abre em nova aba)</span>
+                </a>
+              </li>
+              <li>
+                <span className="contact-channel-label">Instagram</span>
+                <a href={contact.instagramUrl} target="_blank" rel="noopener noreferrer">
+                  <InstagramIcon size={16} />
+                  {contact.instagramHandle}
+                  <span className="sr-only"> no Instagram (abre em nova aba)</span>
+                </a>
+              </li>
+              <li>
+                <span className="contact-channel-label">Atendimento</span>
+                <span className="contact-channel-value">
+                  <MapPin size={16} aria-hidden="true" />
+                  {brand.coverage}
+                </span>
+              </li>
+            </ul>
           </Reveal>
         </div>
 

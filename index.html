@@ -21,7 +21,11 @@
       property="og:description"
       content="Instalação, manutenção e soluções em ar-condicionado para residências e comércios em Curitiba e região."
     />
-    <meta property="og:image" content="/assets/hero/master-frio-hero-poster.webp" />
+    <meta property="og:url" content="%SITE_URL%" />
+    <meta property="og:image" content="%SITE_URL%assets/hero/master-frio-hero-poster.webp" />
+    <meta property="og:image:width" content="1672" />
+    <meta property="og:image:height" content="941" />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="icon" type="image/png" href="/assets/brand/master-frio-icone-aprovado.png" />
     <link
@@ -31,7 +35,14 @@
       type="font/woff2"
       crossorigin
     />
-    <link rel="preload" href="/assets/hero/master-frio-hero-poster.webp" as="image" fetchpriority="high" />
+    <link
+      rel="preload"
+      as="image"
+      href="/assets/hero/master-frio-hero-poster.webp"
+      imagesrcset="/assets/hero/master-frio-hero-poster-1280.webp 1280w, /assets/hero/master-frio-hero-poster.webp 1672w"
+      imagesizes="100vw"
+      fetchpriority="high"
+    />
 
     <!-- Aplica o tema salvo antes da primeira pintura (evita flash de tema). -->
     <script>

@@ -2,16 +2,16 @@ import type { ReactNode } from 'react'
 import { AirVent, Cable, Gauge, PlugZap, ShieldCheck, ShoppingBag, Wrench } from 'lucide-react'
 import { messages, services, whatsappUrl, type ServiceIcon } from '@/data/site'
 import { FocusCards, type FocusCardData } from '@/components/ui/focus-cards'
-import { Reveal } from '@/components/ui/Reveal'
+import { Eyebrow, MaskLines, Reveal } from '@/components/ui/Reveal'
 
 const ICONS: Record<ServiceIcon, ReactNode> = {
-  install: <AirVent size={18} strokeWidth={1.8} />,
-  preventive: <ShieldCheck size={18} strokeWidth={1.8} />,
-  corrective: <Wrench size={18} strokeWidth={1.8} />,
-  gas: <Gauge size={18} strokeWidth={1.8} />,
-  electric: <PlugZap size={18} strokeWidth={1.8} />,
-  sale: <ShoppingBag size={18} strokeWidth={1.8} />,
-  infra: <Cable size={18} strokeWidth={1.8} />,
+  install: <AirVent size={18} strokeWidth={1.75} />,
+  preventive: <ShieldCheck size={18} strokeWidth={1.75} />,
+  corrective: <Wrench size={18} strokeWidth={1.75} />,
+  gas: <Gauge size={18} strokeWidth={1.75} />,
+  electric: <PlugZap size={18} strokeWidth={1.75} />,
+  sale: <ShoppingBag size={18} strokeWidth={1.75} />,
+  infra: <Cable size={18} strokeWidth={1.75} />,
 }
 
 const cards: FocusCardData[] = services.map((s, i) => ({
@@ -32,29 +32,26 @@ const cards: FocusCardData[] = services.map((s, i) => ({
 
 export function Services() {
   return (
-    <section id="servicos" className="section services" aria-labelledby="servicos-title">
+    <section id="servicos" className="section services surface-2" aria-labelledby="servicos-title">
       <div className="shell">
         <header className="section-head">
           <div>
-            <Reveal>
-              <p className="eyebrow">Serviços</p>
-            </Reveal>
-            <Reveal delay={0.06}>
-              <h2 id="servicos-title" className="h2">
-                Nossos serviços
-              </h2>
-            </Reveal>
+            <Eyebrow>Serviços</Eyebrow>
+            <MaskLines id="servicos-title" className="h2" lines={['Nossos serviços']} delay={0.08} />
           </div>
-          <Reveal delay={0.12} className="section-head-aside">
+          <Reveal variant="fade" delay={0.25} className="section-head-aside">
             <p className="lead">
-              Da escolha do aparelho à manutenção: sete frentes de trabalho para residências e comércios.
+              Sete frentes de trabalho, da escolha do aparelho à manutenção, para residências e comércios.
             </p>
           </Reveal>
         </header>
 
         <FocusCards cards={cards} />
 
-        <p className="services-note">Imagens ilustrativas dos tipos de serviço.</p>
+        <p className="services-note">
+          <span aria-hidden="true">*</span> Imagens ilustrativas dos tipos de serviço. Os registros reais estão em
+          Trabalhos.
+        </p>
       </div>
     </section>
   )

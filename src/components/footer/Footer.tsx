@@ -78,21 +78,24 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Marca gráfica decorativa (SVG): ocupa a largura exata em qualquer tela. */}
-        <motion.svg
-          className="footer-wordmark"
-          viewBox="0 0 1000 132"
-          aria-hidden="true"
-          focusable="false"
-          initial={reduced ? false : { opacity: 0, y: 36 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '0px 0px -5% 0px' }}
-          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <text x="0" y="128" textLength="1000" lengthAdjust="spacing">
-            MASTER FRIO
-          </text>
-        </motion.svg>
+        {/* Letreiro monumental (SVG decorativo). O viewBox usa a largura óptica medida da
+            Spline Sans 700 com tracking -0.045em: escala com a tela sem esticar espaçamentos. */}
+        <div className="footer-wordmark-mask">
+          <motion.svg
+            className="footer-wordmark"
+            viewBox="0 150 1184 158"
+            aria-hidden="true"
+            focusable="false"
+            initial={reduced ? false : { y: '72%' }}
+            whileInView={{ y: '0%' }}
+            viewport={{ once: true, margin: '0px 0px -4% 0px' }}
+            transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <text x="0" y="300">
+              MASTER FRIO
+            </text>
+          </motion.svg>
+        </div>
 
         <div className="footer-legal">
           <div className="footer-legal-text">

@@ -49,17 +49,11 @@ body {
   overflow-x: clip;
 }
 
-/* Transição de tema curta (200–280ms) aplicada só durante a troca. */
-html.theme-switching,
-html.theme-switching *,
-html.theme-switching *::before,
-html.theme-switching *::after {
-  transition:
-    background-color var(--dur-theme) var(--ease-soft),
-    color var(--dur-theme) var(--ease-soft),
-    border-color var(--dur-theme) var(--ease-soft),
-    fill var(--dur-theme) var(--ease-soft),
-    stroke var(--dur-theme) var(--ease-soft) !important;
+/* Troca de tema: crossfade curto da View Transitions API (ver useTheme). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 240ms;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 img,
@@ -156,6 +150,17 @@ section[id],
   padding-block: clamp(5rem, 3.5rem + 6vw, 9.5rem);
 }
 
+/* Superfícies tonais (mesmos azuis aprovados, em valores diferentes): ritmo entre seções. */
+.surface-1 {
+  background: var(--surface-1);
+}
+.surface-2 {
+  background: var(--surface-2);
+}
+.surface-3 {
+  background: var(--surface-3);
+}
+
 .eyebrow {
   display: inline-flex;
   align-items: center;
@@ -167,17 +172,23 @@ section[id],
   color: var(--ice);
 }
 
-.eyebrow::before {
-  content: '';
+.eyebrow-rule {
+  display: block;
   width: 28px;
   height: 1px;
   background: currentColor;
-  opacity: 0.7;
+  opacity: 0.75;
+  transform-origin: left center;
+}
+
+.eyebrow--light {
+  color: #ffffff;
 }
 
 .h2 {
+  margin-top: 1.1rem;
   font-size: var(--fs-h2);
-  line-height: 1.04;
+  line-height: 1.02;
   font-weight: 700;
   letter-spacing: -0.032em;
 }
@@ -247,6 +258,26 @@ section[id],
 
 .btn-ghost:hover {
   border-color: var(--text);
+}
+
+.btn-lg {
+  --h: 56px;
+  padding: 0 1.6rem;
+  font-size: 1rem;
+}
+
+/* Botão claro para a faixa azul de destaque. */
+.btn-inverse {
+  background: #ffffff;
+  color: #07264b;
+}
+
+.btn-inverse:hover {
+  background: #dcebf8;
+}
+
+.btn-inverse:focus-visible {
+  outline-color: #ffffff;
 }
 
 .btn-sm {

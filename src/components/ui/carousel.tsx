@@ -12,7 +12,9 @@
  *   preserva o scroll vertical). Sem autoplay.
  * - Slides não atuais: `aria-hidden` e legenda `inert` (clique no vizinho ainda navega); região com aria-roledescription="carrossel"
  *   e contador anunciado educadamente.
- * - object-position por foto, legenda sobre gradiente inferior (contraste AA), lazy-load após a 1ª,
+ * - V2: sem inclinação 3D (só escala/opacidade discretas), legenda editorial abaixo da foto,
+ *   indicador segmentado clicável.
+ * - object-position por foto, legenda com contraste AA, lazy-load após a 1ª,
  *   transição 550ms com easing de reveal.
  */
 import { useCallback, useId, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
@@ -90,11 +92,16 @@ const Slide = ({ slide, index, current, total, handleSlideClick, onOpen }: Slide
             decoding="async"
             draggable={false}
           />
-          <div className="car-shade" aria-hidden="true" />
         </div>
 
+        {/* V2: legenda editorial abaixo da foto — a fotografia real fica limpa, sem gradiente por cima. */}
         <article className="car-caption" inert={!isCurrent}>
-          <h3 className="car-title">{title}</h3>
+          <h3 className="car-title">
+            <span className="car-title-index" aria-hidden="true">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            {title}
+          </h3>
           <button type="button" className="car-open" onClick={() => onOpen?.(index)}>
             <Expand size={15} aria-hidden="true" />
             {button}
@@ -215,12 +222,27 @@ export default function Carousel({ slides, onOpen, label = 'Galeria de fotos' }:
 
       <div className="car-controls">
         <CarouselControl type="previous" title="Foto anterior" handleClick={handlePreviousClick} />
-        <p className="car-count" aria-live="polite" id={`car-count-${id}`}>
-          <span className="car-count-current">{String(current + 1).padStart(2, '0')}</span>
-          <span aria-hidden="true"> / </span>
-          <span className="sr-only"> de </span>
-          {String(slides.length).padStart(2, '0')}
-        </p>
+        <div className="car-progress">
+          <p className="car-count" aria-live="polite" id={`car-count-${id}`}>
+            <span className="car-count-current">{String(current + 1).padStart(2, '0')}</span>
+            <span aria-hidden="true"> / </span>
+            <span className="sr-only"> de </span>
+            {String(slides.length).padStart(2, '0')}
+          </p>
+          <ol className="car-dots" role="list" aria-label="Escolher foto">
+            {slides.map((s, i) => (
+              <li key={s.src}>
+                <button
+                  type="button"
+                  className="car-dot"
+                  aria-label={`Foto ${i + 1}: ${s.title}`}
+                  aria-current={i === current || undefined}
+                  onClick={() => go(i)}
+                />
+              </li>
+            ))}
+          </ol>
+        </div>
         <CarouselControl type="next" title="Próxima foto" handleClick={handleNextClick} />
       </div>
     </div>

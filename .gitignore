@@ -34,3 +34,4 @@ playwright-report
 
 # Claude Code
 .claude/
+dist-pages

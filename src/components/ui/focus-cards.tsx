@@ -6,11 +6,14 @@
  *   permanecem sempre legíveis (o original ocultava o título até o hover).
  * - Ativação por mouse (pointerType "mouse") e por foco de teclado (focus-within); Escape
  *   remove o destaque. Toque não altera estado (sem hover em mobile).
+ * - Entrada escalonada por coluna (Motion), uma única vez; nada com reduced-motion.
  * - Desfoque máx. 2.5px, zoom da foto ativa 1.02, 320ms com easing natural — sem salto/escala do card.
  * - Conteúdo real em DOM (Spline Sans), CTA de WhatsApp por card e layout 3×2 + 1 horizontal.
  */
 import { memo, useCallback, useState, type KeyboardEvent, type ReactNode } from 'react'
+import { motion } from 'motion/react'
 import { cn } from '@/lib/utils'
+import { usePrefersReducedMotion } from '@/hooks/useMediaQuery'
 
 export interface FocusCardData {
   id: string
@@ -36,12 +39,23 @@ interface CardProps {
 }
 
 export const Card = memo(function Card({ card, index, state, setActive }: CardProps) {
+  const reduced = usePrefersReducedMotion()
+  // Entrada única, escalonada por coluna (a linha inteira não "pisca" junta).
+  const enter = reduced
+    ? {}
+    : {
+        initial: { opacity: 0, y: 28 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, margin: '0px 0px -8% 0px' },
+        transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] as const, delay: card.wide ? 0.05 : (index % 3) * 0.09 },
+      }
   const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === 'Escape') setActive(null)
   }
 
   return (
-    <article
+    <motion.article
+      {...enter}
       id={`servico-${card.id}`}
       className={cn('fc-card', card.wide && 'fc-card--wide')}
       data-state={state}
@@ -101,7 +115,7 @@ export const Card = memo(function Card({ card, index, state, setActive }: CardPr
           </svg>
         </a>
       </div>
-    </article>
+    </motion.article>
   )
 })
 

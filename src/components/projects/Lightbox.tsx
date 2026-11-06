@@ -23,8 +23,10 @@ export function Lightbox({ slides, index, onClose, onNavigate }: LightboxProps) 
     if (!dialog) return
     if (open && !dialog.open) {
       dialog.showModal()
-      if (!pushed.current) {
-        history.pushState({ mfLightbox: true }, '')
+      // Só cria entrada no histórico se a atual ainda não for do lightbox (evita empilhar
+      // entradas em aberturas rápidas ou ao recarregar com o estado salvo).
+      if (!pushed.current && !history.state?.mfLightbox) {
+        history.pushState({ ...(history.state ?? {}), mfLightbox: true }, '')
         pushed.current = true
       }
     } else if (!open && dialog.open) {
@@ -45,12 +47,13 @@ export function Lightbox({ slides, index, onClose, onNavigate }: LightboxProps) 
   }, [onClose])
 
   const requestClose = () => {
+    // Fecha imediatamente; se havia entrada própria no histórico, remove-a uma única vez.
+    // (Clique duplo rápido não chama history.back() duas vezes nem sai da página.)
     if (pushed.current) {
-      // Remove a entrada do histórico; o popstate chama onClose.
+      pushed.current = false
       history.back()
-    } else {
-      onClose()
     }
+    onClose()
   }
 
   const slide = index !== null ? slides[index] : null

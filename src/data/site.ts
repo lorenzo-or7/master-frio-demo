@@ -50,29 +50,37 @@ export const navLinks = [
 ] as const
 
 export const hero = {
-  lines: ['Climatização de qualidade.', 'Conforto em todos os ambientes.'],
+  eyebrow: 'Climatização residencial e comercial · Curitiba e região',
+  /** Quebra intencional: cada item é uma linha do Text Mask Reveal. */
+  lines: ['Frio na medida', 'do seu ambiente.'],
   support:
-    'Instalação, manutenção e soluções em ar-condicionado para residências e comércios em Curitiba e região.',
+    // Hífen não separável (U+2011): evita quebra em "ar-/condicionado".
+    'Instalação, manutenção e infraestrutura em ar‑condicionado para residências e comércios de Curitiba e região.',
   primaryCta: 'Solicitar orçamento',
   secondaryCta: 'Conhecer serviços',
   video: asset('assets/hero/master-frio-hero-loop.mp4'),
   poster: asset('assets/hero/master-frio-hero-poster.webp'),
+  /** 1280×720 = resolução do vídeo; usado em telas pequenas (LCP mais rápido no celular). */
+  posterSmall: asset('assets/hero/master-frio-hero-poster-1280.webp'),
 } as const
 
 export const about = {
   eyebrow: 'Sobre a Master Frio',
   title: 'Do dimensionamento à manutenção, tudo em um só lugar.',
+  titleLines: ['Do dimensionamento', 'à manutenção,', 'tudo em um só lugar.'],
   lead: 'Cada serviço é executado conforme as especificações técnicas do equipamento e as condições reais do ambiente.',
   paragraphs: [
-    'Antes de indicar um aparelho ou começar uma instalação, a equipe avalia o espaço, a rede elétrica disponível e o uso que o ambiente vai ter. É isso que orienta a escolha do equipamento e o caminho da infraestrutura.',
-    'Depois da instalação, o acompanhamento continua com manutenção preventiva e corretiva, para que o sistema siga funcionando bem em casas, lojas e escritórios.',
+    'Antes de indicar um aparelho, a Master Frio avalia o espaço, a rede elétrica e o uso do ambiente. Essa leitura define o equipamento e o caminho da instalação.',
+    'Depois de instalado, o sistema segue acompanhado com manutenção preventiva e corretiva, em casas, lojas e escritórios.',
   ],
   marker: ['Residências', 'Comércios', 'Curitiba e região'],
   image: {
-    src: asset('assets/gallery/02-execucao-em-campo.webp'),
-    alt: 'Técnico trabalhando junto à parede, abaixo de várias unidades condensadoras alinhadas em suportes.',
-    width: 1441,
-    height: 1800,
+    // Recorte de detalhe (sem upscale) da foto real 01 — a galeria mostra a fachada inteira.
+    src: asset('assets/gallery/about-01-detalhe.webp'),
+    alt: 'Unidade condensadora instalada em suporte na fachada de um prédio comercial, com a tubulação isolada aparente.',
+    caption: 'Detalhe de instalação em fachada comercial. Registro real.',
+    width: 700,
+    height: 875,
   },
 } as const
 
@@ -108,7 +116,7 @@ export const services: Service[] = [
     id: 'instalacao',
     title: 'Instalação de ar-condicionado',
     messageName: 'instalação de ar-condicionado',
-    description: 'Instalação conforme o equipamento, o ambiente e as exigências técnicas de cada modelo.',
+    description: 'Instalação feita conforme o equipamento, o ambiente e as exigências técnicas de cada modelo.',
     src: asset('assets/services/01-instalacao.webp'),
     alt: '',
     icon: 'install',
@@ -120,7 +128,7 @@ export const services: Service[] = [
     id: 'preventiva',
     title: 'Manutenção preventiva',
     messageName: 'manutenção preventiva',
-    description: 'Inspeção, limpeza e cuidados periódicos para preservar o funcionamento e reduzir falhas.',
+    description: 'Inspeção, limpeza e ajustes periódicos para manter o desempenho e evitar falhas.',
     src: asset('assets/services/02-manutencao-preventiva.webp'),
     alt: '',
     icon: 'preventive',
@@ -132,7 +140,7 @@ export const services: Service[] = [
     id: 'corretiva',
     title: 'Manutenção corretiva',
     messageName: 'manutenção corretiva',
-    description: 'Diagnóstico da falha e correção do que impede o aparelho de funcionar como deveria.',
+    description: 'Diagnóstico da falha e reparo do que impede o aparelho de funcionar corretamente.',
     src: asset('assets/services/03-manutencao-corretiva.webp'),
     alt: '',
     icon: 'corrective',
@@ -145,7 +153,7 @@ export const services: Service[] = [
     title: 'Recarga de gás refrigerante',
     messageName: 'recarga de gás refrigerante',
     description:
-      'Avaliação técnica antes de qualquer recarga, verificando possíveis vazamentos e as características do equipamento.',
+      'A recarga começa pelo diagnóstico: verificação de possíveis vazamentos e das condições do equipamento.',
     src: asset('assets/services/04-recarga-gas.webp'),
     alt: '',
     icon: 'gas',
@@ -157,7 +165,7 @@ export const services: Service[] = [
     id: 'eletrica',
     title: 'Pequenos serviços de elétrica',
     messageName: 'pequenos serviços de elétrica',
-    description: 'Pequenos ajustes e reparos elétricos ligados à instalação e ao funcionamento da climatização.',
+    description: 'Pequenos ajustes e reparos elétricos ligados à instalação e ao funcionamento do ar-condicionado.',
     src: asset('assets/services/05-pequenos-servicos-eletrica.webp'),
     alt: '',
     icon: 'electric',
@@ -170,7 +178,7 @@ export const services: Service[] = [
     id: 'venda',
     title: 'Venda de ar-condicionado',
     messageName: 'venda de ar-condicionado',
-    description: 'Orientação na escolha do equipamento mais adequado ao tamanho e ao uso de cada ambiente.',
+    description: 'Ajuda na escolha do aparelho adequado ao tamanho e ao uso de cada ambiente.',
     src: asset('assets/services/06-venda-ar-condicionado.webp'),
     alt: '',
     icon: 'sale',
@@ -183,7 +191,7 @@ export const services: Service[] = [
     title: 'Infraestrutura para climatização',
     messageName: 'infraestrutura para climatização',
     description:
-      'Preparação e execução da infraestrutura necessária para receber o sistema: caminhos, suportes e passagens.',
+      'Preparação da infraestrutura para receber o sistema: caminhos da tubulação, suportes, drenagem e passagens.',
     src: asset('assets/services/07-infraestrutura-horizontal.webp'),
     alt: '',
     icon: 'infra',
@@ -263,17 +271,21 @@ export const gallery = {
 export const process = {
   eyebrow: 'Como trabalhamos',
   title: 'Critério técnico em cada etapa.',
+  titleLines: ['Critério técnico', 'em cada etapa.'],
   steps: [
     {
       title: 'Orientação sobre equipamento e ambiente',
-      text: 'A indicação do aparelho considera o espaço, a forma de uso e as condições do local, para evitar escolhas que não atendem o ambiente.',
+      label: 'Antes',
+      text: 'A indicação do aparelho considera o espaço, a forma de uso e as condições do local. Assim a escolha atende o ambiente desde o primeiro dia.',
     },
     {
       title: 'Instalação e infraestrutura adequadas',
+      label: 'Durante',
       text: 'Tubulação, suportes, drenagem e ligações seguem as exigências do equipamento, com acabamento organizado no local.',
     },
     {
       title: 'Manutenção e suporte conforme a necessidade',
+      label: 'Depois',
       text: 'Preventiva para manter o sistema em dia e corretiva quando surge uma falha, sempre começando pelo diagnóstico.',
     },
   ],
@@ -282,7 +294,8 @@ export const process = {
 export const coverage = {
   eyebrow: 'Área de atendimento',
   title: 'Curitiba e região.',
-  text: 'Atendimento residencial e comercial. Para outros municípios, consulte a disponibilidade para a sua região.',
+  text: 'Atendimento residencial e comercial. Consulte a disponibilidade para a sua localização.',
+  tags: ['Residências', 'Comércios', 'Instalação e manutenção'],
   cta: 'Consultar disponibilidade',
 } as const
 
@@ -294,9 +307,9 @@ export const contactSection = {
 } as const
 
 export const lanyard = {
-  front: asset('assets/lanyard/card-front.png'),
-  back: asset('assets/lanyard/card-back.png'),
-  strap: asset('assets/lanyard/band.png'),
+  front: asset('assets/lanyard/card-front.webp'),
+  back: asset('assets/lanyard/card-back.webp'),
+  strap: asset('assets/lanyard/band.webp'),
   frontAlt:
     'Crachá da Master Frio com o mascote boneco de neve de boné e uniforme azuis, segurando uma chave e um controle remoto.',
 } as const

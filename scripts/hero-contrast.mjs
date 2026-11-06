@@ -2,9 +2,9 @@
 import { chromium } from '@playwright/test'
 const lum = (r, g, b) => { const f = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4 }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b) }
 const ratio = (a, b) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)
-const TEXT = { title: [244, 248, 252], muted: [185, 205, 226] }
+const TEXT = { title: [244, 248, 252], title2: [202, 220, 238], muted: [185, 205, 226] }
 const b = await chromium.launch({ channel: 'chrome' })
-for (const [w, h] of [[1440, 900], [1024, 768], [390, 844], [844, 390]]) {
+for (const [w, h] of [[1920, 1080], [1440, 900], [1024, 768], [820, 1180], [390, 844], [375, 667], [320, 568], [844, 390]]) {
   const page = await b.newPage({ viewport: { width: w, height: h } })
   await page.goto(process.argv[2] || 'http://localhost:4173', { waitUntil: 'networkidle' })
   const v = page.locator('video.hero-video')
@@ -15,7 +15,7 @@ for (const [w, h] of [[1440, 900], [1024, 768], [390, 844], [844, 390]]) {
     await page.waitForTimeout(150)
     const rects = await page.evaluate(() => {
       const pick = (s) => [...document.querySelectorAll(s)].map((e) => e.getBoundingClientRect().toJSON())
-      const out = { title1: pick('.line-mask:first-child .line-inner'), title2: pick('.line-mask + .line-mask .line-inner'), support: pick('.hero-support') }
+      const out = { title1: pick('.hero-title .line-mask:first-child .line-inner'), title2: pick('.hero-title .line-mask + .line-mask .line-inner'), support: pick('.hero-support'), eyebrow: pick('.hero-eyebrow') }
       document.querySelector('.hero-content').style.visibility = 'hidden'
       return out
     })
@@ -36,7 +36,7 @@ for (const [w, h] of [[1440, 900], [1024, 768], [390, 844], [844, 390]]) {
       return res
     }, { b64: shot.toString('base64'), rects })
     for (const [k, px] of Object.entries(stats)) {
-      const fg = k === 'title1' ? TEXT.title : TEXT.muted
+      const fg = k === 'title1' ? TEXT.title : k === 'title2' ? TEXT.title2 : k === 'eyebrow' ? [214, 228, 241] : TEXT.muted
       const r = ratio(lum(...fg), lum(...px))
       if (!worst[k] || r < worst[k].r) worst[k] = { r: +r.toFixed(2), t, px }
     }
